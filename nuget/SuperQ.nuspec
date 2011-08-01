@@ -1,0 +1,19 @@
+<?xml version="1.0"?>
+<package xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+  <metadata>
+    <id>SuperQ</id>
+    <version>DO_NOT_EDIT</version>
+    <authors>Ben Cull</authors>
+    <owners>Ben Cull</owners>
+    <summary>A portable persistant queue for .NET</summary>
+    <description>SuperQ is much like the Queue Storage for Windows Azure, except it automatically creates a local db instead of using the cloud. It is also self-polling, so all you need is a callback method and you're ready to go. This allows you to create quick and easy task schedulers and background worker processes.</description>
+    <projectUrl>https://github.com/bjcull/SuperQ</projectUrl>
+    <!--<licenseUrl>__REPLACE__</licenseUrl>
+    <requireLicenseAcceptance>false</requireLicenseAcceptance>
+    <tags>space delimited</tags>
+    <iconUrl>32x32.png</iconUrl>-->
+    <dependencies>
+      <dependency id="SqlServerCompact" version="4.0" />
+    </dependencies>
+  </metadata>
+</package>

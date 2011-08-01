@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="utf-8"?>  
+<project name="CUSTOM POST NUGETPREPARE" default="go">  
+  <!-- Project UppercuT - http://projectuppercut.org -->  
+  <property name="build.config.settings" value="__NONE__" overwrite="false" />  
+  <include buildfile="${build.config.settings}" if="${file::exists(build.config.settings)}" />  
+  <property name="path.separator" value="${string::trim(path::combine(' ', ' '))}" />  
+  <property name="dirs.current" value="${directory::get-parent-directory(project::get-buildfile-path())}" />  
+  <property name="path.to.toplevel" value=".." />  
+  <property name="folder.code_drop" value="code_drop" overwrite="false" />  
+  <property name="dirs.drop" value="${dirs.current}${path.separator}${path.to.toplevel}${path.separator}${folder.code_drop}" overwrite="false" />  
+  <property name="dirs.drop" value="${path::get-full-path(dirs.drop)}" />  
+  <property name="folder.nuget" value="nuget" overwrite="false" />  
+  <property name="dirs.drop.nuget" value="${dirs.drop}${path.separator}${folder.nuget}" overwrite="false" />  
+    
+  <target name="go">  
+    <echo message="Removing SqlServerCompact libraries from '${dirs.drop.nuget}\lib'" />  
+    <delete>  
+      <fileset basedir="${dirs.drop.nuget}\lib" >  
+        <include name="System.Data.SqlServerCe.dll" />
+	<include name="amd64${path.separator}Microsoft.VC90.CRT${path.separator}*" />
+	<include name="x86${path.separator}Microsoft.VC90.CRT${path.separator}*" />
+	<include name="amd64${path.separator}*" />
+	<include name="x86${path.separator}*" />
+      </fileset>  
+    </delete>  
+  </target>  
+    
+</project>  
+
