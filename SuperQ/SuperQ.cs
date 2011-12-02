@@ -21,11 +21,18 @@ namespace SuperQ
 
         public Thread StartReceiving(OnMessageReceived<T> action)
         {
-            _receiving = true;
-            Thread thread = new Thread(() => this.Poller(action));
-            thread.Start();
+            if (!this.IsReceiving())
+            {
+                _receiving = true;
+                Thread thread = new Thread(() => this.Poller(action));
+                thread.Start();
 
-            return thread;
+                return thread;
+            }
+            else
+            {
+                return null;
+            }
         }
 
         public void StopReceiving()
@@ -101,5 +108,15 @@ namespace SuperQ
             _storage.Delete();
         }
 
+        /// <summary>
+        /// Determines whether this instance is receiving.
+        /// </summary>
+        /// <returns>
+        /// 	<c>true</c> if this instance is receiving; otherwise, <c>false</c>.
+        /// </returns>
+        public bool IsReceiving()
+        {
+            return this._receiving;
+        }
     }
 }
