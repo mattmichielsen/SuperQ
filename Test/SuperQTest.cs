@@ -52,6 +52,33 @@ namespace Test
         }
 
         [TestMethod]
+        public void GetAllMessages()
+        {
+            var queue = SuperQ.SuperQ<TestClass>.GetQueue("GetAllMessagesTestQueue");
+            queue.Clear();
+            var payload1 = new TestClass();
+            payload1.word = "word1";
+            payload1.number = 1;
+            var payload2 = new TestClass();
+            payload2.word = "word2";
+            payload2.number = 2;
+            queue.PushMessage(payload1);
+            queue.PushMessage(payload2);
+            var result = new List<TestClass>();
+            foreach (var message in queue.GetAllMessages())
+            {
+                result.Add(message.Payload);
+            }
+
+            Assert.AreEqual(result.Count, 2);
+            
+            Assert.AreEqual(result[0], payload1);
+            Assert.AreEqual(result[1], payload2);
+
+            queue.Delete();
+        }
+
+        [TestMethod]
         public void DeleteMessage()
         {
             var testQueue = SuperQ.SuperQ<TestClass>.GetQueue("Queue");
@@ -84,5 +111,15 @@ namespace Test
     {
         public string word { get; set; }
         public int number { get; set; }
+
+        public override bool Equals(object obj)
+        {
+            return this.word == ((TestClass)obj).word && this.number == ((TestClass)obj).number;
+        }
+
+        public override int GetHashCode()
+        {
+            return word.GetHashCode() * number;
+        }
     }
 }

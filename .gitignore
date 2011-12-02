@@ -34,3 +34,7 @@ SerializerTest*/
 #Ignore files from MonoDevelop
 *.pidb
 *.userprefs
+build_output/
+code_drop/
+SolutionVersion.cs
+*~

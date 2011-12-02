@@ -209,7 +209,47 @@ namespace SuperQ.Data
 
         public IEnumerable<QueueMessage<T>> GetAllMessages<T>()
         {
-            throw new NotImplementedException();
+            var messages = new List<QueueMessage<T>>();
+                
+            string sql = @"SELECT QueueID, Added, Retrieved, Message, Schedule, Interval
+                           FROM [Queue] 
+                           ORDER BY Added";
+
+            using (SqlCeConnection conn = new SqlCeConnection(_connection))
+            {
+                conn.Open();
+
+                try
+                {
+                    using (SqlCeCommand cmd = new SqlCeCommand(sql, conn))
+                    {
+                        using (var reader = cmd.ExecuteReader())
+                        {
+                            while (reader.Read())
+                            {
+                                var message = new QueueMessage<T>()
+                                {
+                                    QueueID = reader.GetGuid(0),
+                                    Added = reader.GetDateTime(1),
+                                    Retrieved = reader.IsDBNull(2) ? (DateTime?)null : reader.GetDateTime(2),
+                                    Payload = Helpers.Serialization.FromXml<T>(reader.GetString(3)),
+                                    Schedule = reader.IsDBNull(4) ? (DateTime?)null : reader.GetDateTime(4),
+                                    Interval = reader.IsDBNull(5) ? (decimal?)null : reader.GetDecimal(5)
+                                };
+
+                                messages.Add(message);
+                            }
+                        }
+                    }
+
+                }
+                catch
+                {
+                    throw;
+                }
+            }
+
+            return messages.ToArray();
         }
 
         public void Clear()

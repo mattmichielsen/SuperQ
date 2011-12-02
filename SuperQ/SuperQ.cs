@@ -83,7 +83,7 @@ namespace SuperQ
 
         public IEnumerable<QueueMessage<T>> GetAllMessages()
         {
-            throw new NotImplementedException();
+            return _storage.GetAllMessages<T>();
         }
 
         public static SuperQ<T> GetQueue(string name)
